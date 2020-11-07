@@ -4,31 +4,46 @@
 #include <stdlib.h>
 #include <math.h>
 
- main(int argc, char * argv []){
-	int anchura; 
+
+int  main(int argc, char * argv []){
+
+	int profundo; 
 	int i;
 	int soyPadre;
 	int linea;
 	int procLinea=0;
 	int aux;
+
 	if(argc<2){
 		printf("Faltan argumentos: <ejecutable><anchura del árbol>");
 		return(0);
 	}
-	printf("MAIN: PID %d PPID %d  i= %d soyPadre=%d \n\n", (int)getpid(), (int)getppid(), i,soyPadre);
 	
-	
-	anchura=atoi(argv[1]);
-	for(i=0; i<anchura-1; i++)
-	{
-		if((soyPadre=fork())==0)
-		{
-			printf("HIJOS: PID %d PPID %d  i= %d soyPadre=%d\n", (int)getpid(), (int)getppid(), i,soyPadre);
-			break;
-		}
-	}
+	profundo = atoi(argv[1]);
 
 	
+		for(i=0; i<2 ; i++)
+		{
+			soyPadre = fork();
+			if(soyPadre == -1)
+			{
+				exit(-1);
+			
+			}
+			if(soyPadre == 0)
+			{
+				printf("HIJOS: PID %d PPID %d  i= %d soyPadre=%d\n", (int)getpid(), (int)getppid(), i,soyPadre);
+				profundo--;
+				i = 0;			
+				break;
+			}
+		}
+
+
+
+	
+	
+	/*
 	linea=ceil((float)anchura/2);
 	printf("Linea: %d\n\n",linea);
 	if(soyPadre==0 && i%2==0)
@@ -42,22 +57,21 @@
 		     }
 
 		printf( "HIJOS ANCHURA QUE TENDRAN LINEALES PID %d PPID %d  i= %d soyPadre=%d, linea=%d, aux= %d,  creo %d 			procesos en linea\n", (int)getpid(), (int)getppid(), i,soyPadre, linea,aux,  procLinea);
-        	/*for(i=0; i<procLinea; i++)
+        	for(i=0; i<procLinea; i++)
 		{
 			if(fork()!=0)
 			{
 				break;
 			}
 			printf("HIJOS LINEALES: PID %d PPID %d  i= %d soyPadre=%d\n", (int)getpid(), (int)getppid(), 				i,soyPadre);	
-		}*/
+		}
 
-	}
+	}*/
 
 
 	while(1);
 
 
+
+return 0;
 }
-
-
-
