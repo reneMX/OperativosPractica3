@@ -2,10 +2,11 @@
 #---Con $# obtengo la cantidad de argumentos que son pasados
 if [ ! -f "ReporteArbolBinario.txt" ]; then
   echo "archivo no existe"
+  echo $(touch ReporteArbolBinario.txt) 
 else
   echo "archivo existente"
   #...Creamos el reporte
-  echo $(touch ReporteArbolBinario.txt) 
+ # echo $(touch ReporteArbolBinario.txt) 
 
   Num_argumentos=$#
   if [ $Num_argumentos -lt 1 ];
@@ -15,6 +16,7 @@ else
   fi
   #--- En $1 debe estar el nombre del proceso a monitorear
   echo "Este script va a monitorear el proceso llamado" $1
+
   #...Ejecutamos el archivo c, con un arbol de nivel 5
   #./$1 5
 
@@ -49,15 +51,23 @@ else
   first_proces=$(ps -a |grep $1 |head -n 1|awk '{print $1}')
   echo "El ID del primer proceso " $1 "es " $first_proces
 
+  end_proces=$(ps -a |grep $1 |tail -n 1|awk '{print $1}')
 
   #--- Alumno: Aqui debe poner la instruccion para mostrar el arbol de proceso que estamos monitoreando, para ello usara el id que anteriormente ya obtuvo
 
 
   echo "El arbol del proceso" $1 "es"
 
-  #echo $arbol
-  echo $(pstree -p $first_proces)	
-
-#./script.sh arbol >> ReporteArbolBinario.txt
-
+  
+  arbol=$(pstree -p $first_proces) 
+  echo "$arbol"
+  #echo $(pstree -p $first_proces)	
+  
+ # repo=$(./script.sh arbolB >> ReporteArbolBinario.txt)
+  
 fi
+  
+  $(./script.sh arbolB >> ReporteArbolBinario.txt | kill $$ | kill $first_proces  )
+  exit 1
+ 
+  #$(kill $PPID)
